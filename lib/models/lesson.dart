@@ -5,7 +5,7 @@ class Lesson {
   String title;
   String description;
   String videoUrl;
-  List<Quiz> quizes;
+  List<Test> quizes;
   String courseId;
 
   Lesson({

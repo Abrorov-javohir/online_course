@@ -1,15 +1,13 @@
-class Quiz {
-  String id;
-  String question;
-  List<String> options;
-  int correctAnwerIndex;
+class Test {
+  final int id;
+  final String question;
+  final List<String> options;
+  final int correctOptionIndex;
 
-  Quiz({
+  Test({
     required this.id,
     required this.question,
     required this.options,
-    required this.correctAnwerIndex,
+    required this.correctOptionIndex,
   });
-
-  
 }

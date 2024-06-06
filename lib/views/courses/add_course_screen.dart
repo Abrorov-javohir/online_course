@@ -41,7 +41,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Kurs qo'shish"),
+        title: const Text("Add Course"),
       ),
       body: Form(
         key: formKey,
@@ -51,11 +51,11 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
             TextFormField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: "Nomi",
+                labelText: "Name",
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return "Iltimos kurs nomini kiriting";
+                  return "Please enter name";
                 }
 
                 return null;
@@ -68,13 +68,13 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
             TextFormField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: "Tarifi",
+                labelText: "Description",
               ),
               minLines: 3,
               maxLines: 5,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return "Iltimos tarifi nomini kiriting";
+                  return "PLease enter description";
                 }
 
                 return null;
@@ -90,12 +90,12 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                   context: context,
                   builder: (ctx) {
                     return AlertDialog(
-                      title: const Text("Rasm"),
+                      title: const Text("Image"),
                       content: TextField(
                         controller: imageController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: "Rasm URL",
+                          labelText: "Image URL",
                         ),
                       ),
                       actions: [
@@ -103,13 +103,13 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: const Text("Bekor qilish"),
+                          child: const Text("Cancel"),
                         ),
                         FilledButton(
                           onPressed: () {
                             Navigator.pop(context, imageController.text);
                           },
-                          child: const Text("Saqlash"),
+                          child: const Text("Save"),
                         ),
                       ],
                     );

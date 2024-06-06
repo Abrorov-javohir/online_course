@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/course.dart';
 import 'package:flutter_application_1/utils/routes.dart';
 import 'package:flutter_application_1/view_models/course_viewmodel.dart';
+import 'package:flutter_application_1/views/profile_screen.dart';
+import 'package:flutter_application_1/views/screens/test_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,20 +19,10 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Kurslar"),
+        title: const Text("Courses"),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                RouteNames.addCourseScreen,
-              );
-            },
-            icon: const Icon(Icons.add),
-          ),
-        ],
+        actions: const [],
       ),
       body: FutureBuilder<List<Course>>(
         future: courseViewModel.list,
@@ -70,6 +62,51 @@ class _MainScreenState extends State<MainScreen> {
             );
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            RouteNames.addCourseScreen,
+          );
+          const Icon(
+            Icons.add,
+            color: Colors.white,
+          );
+        },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blue,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.home, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QuizScreen()),
+                );
+              },
+              icon: const Icon(Icons.quiz, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen(
+                            username: AutofillHints.username,
+                          )),
+                );
+              },
+              icon: const Icon(Icons.person, color: Colors.white),
+            ),
+          ],
+        ),
       ),
     );
   }
