@@ -3,6 +3,8 @@ import 'package:flutter_application_1/models/course.dart';
 import 'package:flutter_application_1/utils/routes.dart';
 import 'package:flutter_application_1/view_models/course_viewmodel.dart';
 import 'package:flutter_application_1/views/profile_screen.dart';
+import 'package:flutter_application_1/views/screens/login_screen.dart';
+import 'package:flutter_application_1/views/screens/register_screen.dart';
 import 'package:flutter_application_1/views/screens/test_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -97,10 +99,7 @@ class _MainScreenState extends State<MainScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProfileScreen(
-                            username: AutofillHints.username,
-                          )),
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
                 );
               },
               icon: const Icon(Icons.person, color: Colors.white),
