@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter_application_1/models/lesson.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,26 +9,29 @@ class LessonsHttpServices {
 
     try {
       final response = await http.get(url);
-      final data = jsonDecode(response.body);
-      List<Lesson> lessons = [];
-      if (data != null) {
-        data.forEach((key, value) {
-          lessons.add(
-            Lesson(
-              id: key,
-              courseId: value['courseId'],
-              title: value['title'],
-              description: value['description'],
-              videoUrl: value['videoUrl'],
-              quizes: [],
-            ),
-          );
-        });
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>?;
+        List<Lesson> lessons = [];
+        if (data != null) {
+          data.forEach((key, value) {
+            lessons.add(
+              Lesson(
+                id: key,
+                courseId: value['courseId'],
+                title: value['title'],
+                description: value['description'],
+                videoUrl: value['videoUrl'],
+                quizes: [],
+              ),
+            );
+          });
+        }
+        return lessons;
+      } else {
+        print('Error fetching lessons: ${response.statusCode}');
       }
-
-      return lessons;
     } catch (e) {
-      print(e);
+      print('Error fetching lessons: $e');
     }
 
     return [];
@@ -54,15 +56,20 @@ class LessonsHttpServices {
       };
       final response = await http.post(
         url,
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode(lessonData),
       );
-      final data = jsonDecode(response.body);
-      if (data != null) {
-        lessonData['id'] = data['name'];
-        return data['name'];
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data != null) {
+          return data['name'];
+        }
+      } else {
+        print('Error adding lesson: ${response.statusCode}');
       }
     } catch (e) {
-      print(e);
+      print('Error adding lesson: $e');
     }
+    return null;
   }
 }

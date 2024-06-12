@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class AuthHttpServices {
-  final String _apiKey = "AIzaSyDDiIbOdiC6m64YFLroqMVaBmi2lD2NKu4";
+  final String _apiKey = "AIzaSyC7Y7uWlHvBpUslcrC0zF-jfFFLEjD7D9E";
 
   Future<Map<String, dynamic>> _authenticate(
       String email, String password, String nima) async {
     Uri url = Uri.parse(
-        "https://identitytoolkit.googleapis.com/v1/accounts:$nima?key=$_apiKey");
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$_apiKey");
 
     try {
       final response = await http.post(

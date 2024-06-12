@@ -1,14 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/course.dart';
 import 'package:flutter_application_1/views/lessons/add_lesson_screen.dart';
 
 class CourseDetails extends StatefulWidget {
   final Course course;
-  const CourseDetails({
-    super.key,
-    required this.course,
-  });
+
+  const CourseDetails({super.key, required this.course});
 
   @override
   State<CourseDetails> createState() => _CourseDetailsState();
@@ -79,7 +76,9 @@ class _CourseDetailsState extends State<CourseDetails> {
                     },
                   ),
                 );
-                setState(() {});
+                setState(() {
+                  // Trigger a rebuild to show the updated lessons
+                });
               },
               child: const Text("Dars qo'shish"),
             ),

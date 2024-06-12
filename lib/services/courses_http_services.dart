@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_application_1/models/course.dart';
 import 'package:http/http.dart' as http;
@@ -11,29 +10,34 @@ class CoursesHttpServices {
 
     try {
       final response = await http.get(url);
-      final data = jsonDecode(response.body);
-      List<Course> courses = [];
-      if (data != null) {
-        data.forEach((key, value) {
-          courses.add(
-            Course(
-              id: key,
-              title: value['title'],
-              description: value['description'],
-              imageUrl: value['imageUrl'],
-              lessons: value['lessons'] == null
-                  ? []
-                  : value['lessons'].cast<String>(),
-              price: value['price'].toDouble(),
-            ),
-          );
-        });
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>?;
+        List<Course> courses = [];
+        if (data != null) {
+          data.forEach((key, value) {
+            courses.add(
+              Course(
+                id: key,
+                title: value['title'],
+                description: value['description'],
+                imageUrl: value['imageUrl'],
+                lessons: value['lessons'] == null
+                    ? []
+                    : List<String>.from(value['lessons']),
+                price: value['price'].toDouble(),
+              ),
+            );
+          });
+        }
+        return courses;
+      } else {
+        if (kDebugMode) {
+          print('Error fetching courses: ${response.statusCode}');
+        }
       }
-
-      return courses;
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print('Error fetching courses: $e');
       }
     }
 
@@ -46,8 +50,7 @@ class CoursesHttpServices {
     required String imageUrl,
     required double price,
   }) async {
-    Uri url = Uri.parse(
-        "https://lesson50-efebe-default-rtdb.asia-southeast1.firebasedatabase.app/courses.json");
+    Uri url = Uri.parse("https://dars54-default-rtdb.firebaseio.com/");
 
     try {
       final courseData = {
@@ -59,18 +62,22 @@ class CoursesHttpServices {
       };
       final response = await http.post(
         url,
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode(courseData),
       );
-      final data = jsonDecode(response.body);
-      if (kDebugMode) {
-        print(data);
-      }
-      if (data != null) {
-        courseData['id'] = data['name'];
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (kDebugMode) {
+          print(data);
+        }
+      } else {
+        if (kDebugMode) {
+          print('Error adding course: ${response.statusCode}');
+        }
       }
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print('Error adding course: $e');
       }
     }
   }
@@ -85,12 +92,23 @@ class CoursesHttpServices {
       };
       final response = await http.patch(
         url,
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode(courseData),
       );
-      final data = jsonDecode(response.body);
-      print(data);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (kDebugMode) {
+          print(data);
+        }
+      } else {
+        if (kDebugMode) {
+          print('Error adding lessons to course: ${response.statusCode}');
+        }
+      }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print('Error adding lessons to course: $e');
+      }
     }
   }
 }

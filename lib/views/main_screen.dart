@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/course.dart';
 import 'package:flutter_application_1/utils/routes.dart';
 import 'package:flutter_application_1/view_models/course_viewmodel.dart';
-import 'package:flutter_application_1/views/profile_screen.dart';
 import 'package:flutter_application_1/views/screens/login_screen.dart';
-import 'package:flutter_application_1/views/screens/register_screen.dart';
 import 'package:flutter_application_1/views/screens/test_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -24,10 +22,10 @@ class _MainScreenState extends State<MainScreen> {
         title: const Text("Courses"),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
-        actions: const [],
       ),
       body: FutureBuilder<List<Course>>(
-        future: courseViewModel.list,
+        future:
+            courseViewModel.list, // Ensure this returns a Future<List<Course>>
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -71,11 +69,11 @@ class _MainScreenState extends State<MainScreen> {
             context,
             RouteNames.addCourseScreen,
           );
-          const Icon(
-            Icons.add,
-            color: Colors.white,
-          );
         },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.blue,
@@ -103,6 +101,15 @@ class _MainScreenState extends State<MainScreen> {
                 );
               },
               icon: const Icon(Icons.person, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Cart()),
+                );
+              },
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
             ),
           ],
         ),

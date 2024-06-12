@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view_models/course_viewmodel.dart';
 
@@ -27,13 +26,19 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       setState(() {
         isLoading = true;
       });
+
+      // Assuming addCourse returns a Future<void>, we should await it without using the result
       await courseViewModel.addCourse(
         title: title!,
         description: description!,
         imageUrl: imageController.text,
         price: price!,
       );
-      Navigator.pop(context);
+
+      // After adding course, go back to the previous screen
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -57,7 +62,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                 if (value == null || value.trim().isEmpty) {
                   return "Please enter name";
                 }
-
                 return null;
               },
               onSaved: (newValue) {
@@ -74,9 +78,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
               maxLines: 5,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return "PLease enter description";
+                  return "Please enter description";
                 }
-
                 return null;
               },
               onSaved: (newValue) {
@@ -86,7 +89,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
             const SizedBox(height: 10),
             InkWell(
               onTap: () async {
-                final response = await showDialog(
+                final response = await showDialog<String>(
                   context: context,
                   builder: (ctx) {
                     return AlertDialog(
@@ -101,13 +104,13 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       actions: [
                         TextButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pop(ctx);
                           },
                           child: const Text("Cancel"),
                         ),
                         FilledButton(
                           onPressed: () {
-                            Navigator.pop(context, imageController.text);
+                            Navigator.pop(ctx, imageController.text);
                           },
                           child: const Text("Save"),
                         ),
@@ -117,7 +120,9 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                 );
 
                 if (response != null) {
-                  setState(() {});
+                  setState(() {
+                    imageController.text = response;
+                  });
                 }
               },
               child: Ink(
@@ -129,13 +134,17 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                   image: imageController.text.isNotEmpty
                       ? DecorationImage(
                           image: NetworkImage(imageController.text),
+                          fit: BoxFit.cover,
                         )
                       : null,
                 ),
-                child: const Center(
-                  child: Text(
-                    "Rasm qo'shing",
-                  ),
+                child: Center(
+                  child: imageController.text.isEmpty
+                      ? const Text(
+                          "Add Image",
+                          style: TextStyle(fontSize: 16),
+                        )
+                      : null,
                 ),
               ),
             ),
@@ -144,13 +153,15 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: "Narxi",
+                labelText: "Price",
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return "Iltimos narxini kiriting";
+                  return "Please enter price";
                 }
-
+                if (double.tryParse(value) == null) {
+                  return "Please enter a valid number";
+                }
                 return null;
               },
               onSaved: (newValue) {
@@ -164,7 +175,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                   )
                 : FilledButton(
                     onPressed: submit,
-                    child: const Text("Yaratish"),
+                    child: const Text("Create"),
                   ),
           ],
         ),

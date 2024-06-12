@@ -32,8 +32,7 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
-      courses = await courseViewModel
-          .getList(); 
+      courses = await courseViewModel.getList();
       setState(() {});
     });
 
